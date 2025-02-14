@@ -19,7 +19,7 @@ Afterlife is an AI-powered voice journal that preserves your personality, memori
 ## 🛠️ How It Works  
 
 1️⃣ **Create a Character Card**  
-   - User fills out a JSON file with their personal information (`json-example.txt`).  
+   - User fills out a JSON file with their personal information (`json-empty.json`) like in json-example.json.  
 
 2️⃣ **Generate a Character Card Prompt**  
    - This JSON is combined with a prompt template (`prompt-generation.txt`).  
