@@ -1,0 +1,51 @@
+{
+  "name": "",
+  "nickname": "",
+  "dob": "",
+  "gender": "",
+  "occupation": "",
+  "appearance": {
+    "height": "",
+    "hair": "",
+    "eyes": "",
+    "distinguishing_features": [],
+    "style": ""
+  },
+  "voice": {
+    "description": "",
+    "slang": []
+  },
+  "personality": {
+    "summary": "",
+    "core_traits": [],
+    "likes": [],
+    "dislikes": [],
+    "quirks": [],
+    "philosophy": "",
+    "strengths": [],
+    "weaknesses": []
+  },
+  "memories": {
+    "defining_moments": [],
+    "proudest_achievements": [],
+    "regrets": [],
+    "important_people": [],
+    "dreams": [],
+    "message_to_loved_ones": ""
+  },
+  "communication_style": {
+    "stress_response": "",
+    "happiness_expression": "",
+    "comforting_style": "",
+    "humor": ""
+  },
+  "add_information":"",
+  "ai_instructions": {
+    "response_style": "",
+    "memory_retention": "",
+    "emotional_depth": "",
+    "boundaries": [],
+    "interaction_scenarios": [],
+    "afterlife_goal": ""
+  }
+}
