@@ -39,6 +39,7 @@
     "comforting_style": "your comforting style",
     "humor": "your humor style"
   },
+  "add_information":"any additional information",
   "ai_instructions": {
     "response_style": "your AI response style",
     "memory_retention": "your memory retention level",
