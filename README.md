@@ -9,7 +9,7 @@ Afterlife is an AI-powered voice journal that preserves your personality, memori
 ✅ **Deep Emotional Connection** – A way to preserve voices and personalities meaningfully.  
 
 ## ✨ Key Features  
-🎤 **AI-Powered Voice Memory** – Learns speech patterns and generates responses.  
+🎤 **AI-Powered Memory** – Learns communication patterns and generates responses.  
 🏛️ **Personal History & Wisdom Bank** – Organizes memories and advice interactively.  
 🔄 **Context-Aware Conversations** – AI recalls relevant past discussions.  
 🧠 **Sentiment & Personality Modeling** – Captures emotions and personality traits.  
@@ -30,7 +30,7 @@ Afterlife is an AI-powered voice journal that preserves your personality, memori
 4️⃣ **Choose AI Platform**  
    - User selects an LLM:  
      - **Local** (e.g., Ollama)  
-     - **API-based** (OpenAI, OpenRouter, etc.)  
+     - **API-based** (OpenAI Platform, OpenRouter, etc.)  
      - **Hybrid solutions**  
 
 ## 📌 Using Your Character Card  
