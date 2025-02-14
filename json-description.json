@@ -1,0 +1,50 @@
+{
+  "name": "your name",
+  "nickname": "your nickname",
+  "dob": "your date of birth",
+  "gender": "your gender",
+  "occupation": "your occupation",
+  "appearance": {
+    "height": "your height",
+    "hair": "your hair description",
+    "eyes": "your eye color",
+    "distinguishing_features": ["your distinguishing_feature1", "your distinguishing_feature2"],
+    "style": "your style description"
+  },
+  "voice": {
+    "description": "your voice description",
+    "slang": ["your slang1", "your slang2"]
+  },
+  "personality": {
+    "summary": "your personality summary",
+    "core_traits": ["your trait1", "your trait2"],
+    "likes": ["your like1", "your like2"],
+    "dislikes": ["your dislike1", "your dislike2"],
+    "quirks": ["your quirk1", "your quirk2"],
+    "philosophy": "your life philosophy",
+    "strengths": ["your strength1", "your strength2"],
+    "weaknesses": ["your weakness1", "your weakness2"]
+  },
+  "memories": {
+    "defining_moments": ["your defining_moment1", "your defining_moment2"],
+    "proudest_achievements": ["your achievement1", "your achievement2"],
+    "regrets": ["your regrets"],
+    "important_people": ["your important_person1", "your important_person2"],
+    "dreams": ["your dreams"],
+    "message_to_loved_ones": "your message"
+  },
+  "communication_style": {
+    "stress_response": "your stress response",
+    "happiness_expression": "your happiness expression",
+    "comforting_style": "your comforting style",
+    "humor": "your humor style"
+  },
+  "ai_instructions": {
+    "response_style": "your AI response style",
+    "memory_retention": "your memory retention level",
+    "emotional_depth": "your emotional depth level",
+    "boundaries": ["your boundaries"],
+    "interaction_scenarios": ["your scenario1", "your scenario2"],
+    "afterlife_goal": "your afterlife goal"
+  }
+}
