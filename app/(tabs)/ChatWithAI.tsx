@@ -17,6 +17,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
+import Config from 'react-native-config';
+const API_KEY = Config.OPENROUTER_API_KEY;
 
 // Define message interface
 interface Message {
