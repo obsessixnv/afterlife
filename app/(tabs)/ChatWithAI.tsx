@@ -119,7 +119,7 @@ Final Confirmation:
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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',
+            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
             'HTTP-Referer': 'https://afterlife.app', // Replace with your actual app URL
             'X-Title': 'AfterLife Digital Twin'
           }
