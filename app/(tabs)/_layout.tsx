@@ -66,6 +66,20 @@ export default function TabLayout() {
         }}
       />
 
+      <Tabs.Screen
+        name="characterCreationChat"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="CharacterManager"
+        options={{
+          href: null,
+        }}
+      />
+
     </Tabs>
     
   );

@@ -79,7 +79,7 @@ export default function LLMSelectionScreen() {
                 if (selectedOption) {
                   // Go to the next screen with the selected option
                   router.push({
-                    pathname: '/ChatWithAI',
+                    pathname: '/characterCreationChat',
                     params: { llmType: selectedOption }
                   });
                 }

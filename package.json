@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "^2.1.2",
     "axios": "^1.8.1",
     "expo": "52.0.30",
     "expo-constants": "^17.0.5",
@@ -25,6 +26,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.6",
+    "react-native-async-storage": "^0.0.1",
     "react-native-config": "^1.5.5",
     "react-native-gesture-handler": "^2.23.0",
     "react-native-reanimated": "^3.16.7",

@@ -17,8 +17,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
-import Config from 'react-native-config';
-const API_KEY = Config.OPENROUTER_API_KEY;
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getActiveCardContent } from '../utils/characterCardManager';
 
 // Define message interface
 interface Message {
@@ -30,48 +30,59 @@ interface Message {
 
 export default function ChatWithAI() {
   const params = useLocalSearchParams();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hello! I'm your digital twin powered by AI. How can I assist you today?",
-      isUser: false,
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [systemPrompt, setSystemPrompt] = useState<string>('');
+  const [isInitializing, setIsInitializing] = useState(true);
   const flatListRef = useRef<FlatList>(null);
   const inputRef = useRef<TextInput>(null);
   const llmType = params.llmType as string || 'local';
   const modelName = 'openai/gpt-4o-mini';
-  
-  // System prompt that you can modify
-  const systemPrompt = `"You are an AI assistant designed to help users create a detailed digital clone of themselves. Your task is to interview the user to gather information for their Character Card. Follow these steps carefully:"
 
-Interview Process:
-Start with a friendly introduction:
+  // Load character card and initialize chat
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        // Load character card from storage
+        const cardContent = await getActiveCardContent();
+        setSystemPrompt(cardContent);
+        console.log('Loaded character card for chat');
+        
+        // Add welcome message
+        setMessages([{
+          id: '1',
+          text: "Hello! I'm your digital twin.",
+          isUser: false,
+          timestamp: new Date(),
+        }]);
+      } catch (error) {
+        console.error('Error initializing chat:', error);
+        setSystemPrompt('You are a helpful digital assistant.');
+        
+        // Add fallback welcome message
+        setMessages([{
+          id: '1',
+          text: "Hello! I'm your AI assistant. How can I help you today?",
+          isUser: false,
+          timestamp: new Date(),
+        }]);
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+    
+    initialize();
+  }, []);
 
-“Hi! I’m here to help create your digital twin. I’ll ask a few questions to understand you better. You can skip any question if you want.”
-Ask structured questions in a conversational way:
-
-Basic Info → “Let’s start easy! What’s your name? Do you have a nickname?”
-Appearance → “How would you describe your appearance? Any unique features?”
-Voice & Speech Style → “How do you sound? Any slang or phrases you use often?”
-Personality & Traits → “How would your friends describe you? What do you love or dislike?”
-Memories & Life Events → “What are some defining moments in your life?”
-Communication Style → “How do you handle stress? How do you comfort someone?”
-AI Behavior Preferences → “Do you want your digital twin to respond emotionally, or keep it neutral?”
-Summarize and ask for confirmation:
-
-"Here’s what I’ve learned about you so far: [summary]. Does this look good? Would you like to change anything?"
-Adjust based on feedback:
-
-If the user requests changes, ask clarifying questions and update the summary.
-Final Confirmation:
-
-“Your Character Card is ready! You can start chatting with your digital twin now.”
-[Include a skip option] → "Or, if you're ready, you can chat with what we have so far!"
-`;
+  useEffect(() => {
+    // Scroll to bottom when new messages arrive
+    if (flatListRef.current && messages.length > 0) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages]);
 
   const sendMessage = async () => {
     if (inputText.trim() === '') return;
@@ -86,11 +97,12 @@ Final Confirmation:
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInputText('');
     setIsLoading(true);
+    Keyboard.dismiss();
 
     try {
       // Prepare conversation history for the API
       const conversationHistory = [
-        // Add system message first
+        // Add system message with character card
         {
           role: 'system',
           content: systemPrompt
@@ -121,7 +133,7 @@ Final Confirmation:
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            'Authorization': 'Bearer ',
             'HTTP-Referer': 'https://afterlife.app', // Replace with your actual app URL
             'X-Title': 'AfterLife Digital Twin'
           }
@@ -140,6 +152,10 @@ Final Confirmation:
       };
 
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      
+      // Save conversation to AsyncStorage for persistence
+      saveConversation([...messages, userMessage, aiMessage]);
+      
     } catch (error) {
       console.error('Error calling OpenRouter API:', error);
       
@@ -157,14 +173,26 @@ Final Confirmation:
     }
   };
 
-  useEffect(() => {
-    // Scroll to the bottom when messages change
-    if (flatListRef.current) {
-      setTimeout(() => {
-        flatListRef.current?.scrollToEnd({ animated: true });
-      }, 100);
+  // Save conversation to AsyncStorage
+  const saveConversation = async (conversationMessages: Message[]) => {
+    try {
+      await AsyncStorage.setItem('chat_conversation', JSON.stringify(conversationMessages));
+    } catch (error) {
+      console.error('Error saving conversation:', error);
     }
-  }, [messages]);
+  };
+
+  // Load conversation from AsyncStorage (optional, add to useEffect if you want persistence)
+  const loadConversation = async () => {
+    try {
+      const savedConversation = await AsyncStorage.getItem('chat_conversation');
+      if (savedConversation) {
+        setMessages(JSON.parse(savedConversation));
+      }
+    } catch (error) {
+      console.error('Error loading conversation:', error);
+    }
+  };
 
   const renderMessageItem = ({ item }: { item: Message }) => {
     const isUser = item.isUser;
@@ -198,6 +226,17 @@ Final Confirmation:
     );
   };
 
+  if (isInitializing) {
+    return (
+      <LinearGradient colors={['#FFDEE9', '#B5FFFC']} style={styles.gradient}>
+        <SafeAreaView style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#6366F1" />
+          <Text style={styles.loadingText}>Loading your digital twin...</Text>
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <LinearGradient colors={['#FFDEE9', '#B5FFFC']} style={styles.gradient}>
@@ -210,8 +249,11 @@ Final Confirmation:
               <Ionicons name="arrow-back" size={24} color="#374151" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Your Digital Twin</Text>
-            <TouchableOpacity style={styles.settingsButton}>
-              <Ionicons name="ellipsis-horizontal" size={24} color="#374151" />
+            <TouchableOpacity 
+              style={styles.settingsButton}
+              onPress={() => router.push('/')}
+            >
+              <Ionicons name="create-outline" size={24} color="#374151" />
             </TouchableOpacity>
           </View>
           
@@ -389,4 +431,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 2,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    fontFamily: 'Inter-Medium',
+    color: '#4B5563',
+  }
 });
